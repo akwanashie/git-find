@@ -7,5 +7,9 @@
     (json/read-str (:body response) :key-fn keyword)
     (throw (Exception. "Error"))))
 
-(defn repo-details [repo]
-  {:name (:name repo)})
+(defn repo-name [repo]
+  (:name repo))
+
+(defn file-details [file]
+  {:name (:name file)
+   :type (:type file)})

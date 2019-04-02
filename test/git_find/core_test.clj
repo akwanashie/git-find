@@ -3,14 +3,14 @@
             [clojure.data.json :as json]
             [git-find.core :refer :all]))
 
-(deftest test-repo-details
-  (testing "Should return the repository details from the json response"
-    (let [repo-name "test-repo"
-          expected {:name repo-name}]
-      (is (= expected (repo-details {:name repo-name})))))
-  (testing "Should return null values if not present"
+(deftest test-repo-name
+  (testing "Should return the repository name from the json response"
+    (let [name "test-repo"
+          github-response {:name name}]
+      (is (= name (repo-name github-response)))))
+  (testing "Should return null if name not present"
     (let [expected {:name nil}]
-      (is (= expected (repo-details {}))))))
+      (is (nil? (repo-name {}))))))
 
 (deftest test-response-body
   (testing "Should return the body if status is 200"

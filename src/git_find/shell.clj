@@ -13,13 +13,26 @@
     (client/get full-url {:headers {:Authorization token}
                           :query-params query-params})))
 
-(defn github-repos [team-name]
+(defn github-content [owner repo]
+  (-> (str "/repos/" owner "/" repo "/contents/")
+      (github-get {})
+      (core/github-response-body)
+      (#(map core/file-details %))
+      (#(map (fn [file] (assoc file :repo repo)) %))))
+
+(defn top-level-files [repo owner]
+  (-> repo
+      (core/repo-name)
+      (#(github-content owner %))))
+
+(defn github-repos [owner]
   (-> "/user/repos"
       (github-get {:type "owner"})
       (core/github-response-body)
-      (#(map core/repo-details %))))
+      (#(map (fn [repo] (top-level-files repo owner)) %))
+      (flatten)))
 
 (defn -main []
-  (-> "connections"
+  (-> "akwanashie"
       (github-repos)
       (clojure.pprint/pprint)))
