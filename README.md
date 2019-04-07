@@ -6,7 +6,7 @@ clojure 101 - find stuff on github
 
 Run the project directly:
 
-    $ boot run
+    $ boot run -a "test-project"
 
 Run the project's tests (they'll fail until you edit them):
 
