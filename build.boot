@@ -5,6 +5,7 @@
           :source-paths   #{"test"}
           :dependencies   '[[adzerk/boot-test "RELEASE" :scope "test"]
                             [clj-http "3.9.1"]
+                            [clj-fuzzy "0.4.1"]
                             [environ "0.5.0"]
                             [org.clojure/clojure "RELEASE"]
                             [org.clojure/data.json "0.2.6"]])

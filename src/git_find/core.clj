@@ -1,6 +1,7 @@
 (ns git-find.core
   (:require [clojure.data.json :as json]
-            [clojure.string :as str])
+            [clojure.string :as str]
+            [clj-fuzzy.metrics :as fuzzy])
   (:gen-class))
 
 (defn github-response-body [response]
@@ -35,7 +36,7 @@
    :type (:type file)})
 
 (defn append-distance [project keyword]
-  (assoc project :distance (distance keyword (:name project))))
+  (assoc project :distance (fuzzy/levenshtein keyword (:name project))))
 
 (defn append-distances [projects keyword]
   (map #(append-distance % keyword) projects))
