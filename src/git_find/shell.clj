@@ -25,7 +25,7 @@
       (core/repo-name)
       (#(github-content owner %))))
 
-(defn github-repos [owner]
+(defn github-projects [owner]
   (-> "/user/repos"
       (github-get {:type "owner"})
       (core/github-response-body)
@@ -34,5 +34,6 @@
 
 (defn -main []
   (-> "akwanashie"
-      (github-repos)
+      (github-projects)
+      (core/append-distances "readme.md")
       (clojure.pprint/pprint)))
