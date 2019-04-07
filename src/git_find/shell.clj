@@ -32,8 +32,8 @@
       (#(map (fn [repo] (top-level-files repo owner)) %))
       (flatten)))
 
-(defn -main []
-  (-> "akwanashie"
-      (github-projects)
-      (core/append-distances "readme.md")
-      (clojure.pprint/pprint)))
+(defn -main [& args]
+  (->> "akwanashie"
+       (github-projects)
+       (core/findMatch (first args))
+       (clojure.pprint/pprint)))

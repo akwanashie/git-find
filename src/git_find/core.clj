@@ -12,31 +12,24 @@
 (defn repo-name [repo]
   (:name repo))
 
-(defn levenshtein-distance [str1 len1 str2 len2]
-  (cond (= 0 len1) len2
-        (= 0 len2) len1
-        :else (let [cost (if (=
-                              (nth str1 (- len1 1))
-                              (nth str2 (- len2 1)))
-                           0 1)]
-                (min
-                 (+ 1 (levenshtein-distance str1 (- len1 1) str2 len2))
-                 (+ 1 (levenshtein-distance str1 len1 str2 (- len2 1)))
-                 (+ cost (levenshtein-distance str1 (- len1 1) str2 (- len2 1)))))))
-
 (defn distance [string1 string2]
-  (levenshtein-distance
+  (fuzzy/levenshtein
    (str/lower-case string1)
-   (count string1) 
-   (str/lower-case string2)
-   (count string2)))
+   (str/lower-case string2)))
 
 (defn file-details [file]
   {:name (:name file)
    :type (:type file)})
 
-(defn append-distance [project keyword]
-  (assoc project :distance (fuzzy/levenshtein keyword (:name project))))
+(defn append-distance [keyword project]
+  (assoc project :distance (distance keyword (:name project))))
 
-(defn append-distances [projects keyword]
-  (map #(append-distance % keyword) projects))
+(defn append-distances [keyword projects]
+  (map #(append-distance keyword %) projects))
+
+(defn findMatch [keyword projects]
+  (->> projects
+       (append-distances keyword)
+       (#(sort-by (fn [x] (:distance x)) %))
+       (take 10)
+       (#(map (fn [x] (:repo x)) %))))
