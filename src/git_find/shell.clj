@@ -21,9 +21,10 @@
       (#(map (fn [file] (assoc file :repo repo)) %))))
 
 (defn top-level-files [repo owner]
-  (-> repo
-      (core/repo-name)
-      (#(github-content owner %))))
+  (let [repo-name (core/repo-name repo)]
+    (-> repo-name
+        (#(github-content owner %))
+        (conj {:name repo-name :repo repo-name}))))
 
 (defn github-projects [owner]
   (-> "/user/repos"
@@ -33,7 +34,8 @@
       (flatten)))
 
 (defn -main [& args]
-  (->> "akwanashie"
-       (github-projects)
-       (core/findMatch (first args))
-       (clojure.pprint/pprint)))
+  (let [user "akwanashie"]
+    (->> user
+         (github-projects)
+         (core/findMatch (first args))
+         (#(doseq [x %] (println (str "http://www.github.com/" user "/" x)))))))

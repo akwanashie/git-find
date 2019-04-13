@@ -20,8 +20,9 @@ Run the uberjar:
 
     $ java -jar target/git-find-0.1.0-SNAPSHOT-standalone.jar [args]
 
+Run the script:
+
+    $ ./run.sh [args]
+
 ## ToDo
-- Remove duplicates
-- Include repo names in the search
-- Test that it works!
 - Create shortcut script

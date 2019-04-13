@@ -31,5 +31,6 @@
   (->> projects
        (append-distances keyword)
        (#(sort-by (fn [x] (:distance x)) %))
-       (take 10)
-       (#(map (fn [x] (:repo x)) %))))
+       (#(map (fn [x] (:repo x)) %))
+       (distinct)
+       (take 5)))
